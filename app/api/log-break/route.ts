@@ -1,8 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { PrismaClient, LogType } from '@prisma/client';
 import { google } from 'googleapis';
-import path from 'path';
-import { promises as fs } from 'fs';
 
 const prisma = new PrismaClient();
 
@@ -26,10 +24,8 @@ export async function POST(req: NextRequest) {
       },
     });
 
-    // Step 2: Append to Google Sheet
-    const filePath = path.join(process.cwd(), 'google-service-account.json');
-    const content = await fs.readFile(filePath, 'utf8');
-    const credentials = JSON.parse(content);
+    // Step 2: Append to Google Sheet using env variable
+    const credentials = JSON.parse(process.env.GOOGLE_SERVICE_ACCOUNT as string);
 
     const auth = new google.auth.GoogleAuth({
       credentials,
@@ -38,7 +34,7 @@ export async function POST(req: NextRequest) {
 
     const sheets = google.sheets({ version: 'v4', auth });
 
-    const spreadsheetId = '1p9-EZim2g6kfGPPo02Pvi_ZYmKF2DDCKMwCsLIzyUl4';
+    const spreadsheetId = process.env.SPREADSHEET_ID;
     const range = 'Sheet1!A1';
     const valueInputOption = 'RAW';
 
