@@ -24,11 +24,14 @@ export async function POST(req: NextRequest) {
       },
     });
 
-    // Step 2: Append to Google Sheet using env variable
-    const credentials = JSON.parse(process.env.GOOGLE_SERVICE_ACCOUNT as string);
+    // Step 2: Append to Google Sheet using service account
+    const rawCredentials = JSON.parse(process.env.GOOGLE_SERVICE_ACCOUNT as string);
+
+    // Fix the escaped newlines in the private key
+    rawCredentials.private_key = rawCredentials.private_key.replace(/\\n/g, '\n');
 
     const auth = new google.auth.GoogleAuth({
-      credentials,
+      credentials: rawCredentials,
       scopes: ['https://www.googleapis.com/auth/spreadsheets'],
     });
 
