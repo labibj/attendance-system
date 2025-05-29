@@ -3,14 +3,13 @@
 import { NextResponse } from 'next/server';
 import { PrismaClient } from '@prisma/client';
 
-// Use a singleton pattern if not already (recommended in lib/prisma.ts for serverless)
 const prisma = new PrismaClient();
 
 export async function DELETE(
-  request: Request,
+  req: Request,
   context: { params: { id: string } }
 ) {
-  const { id } = context.params;
+  const id = context.params.id;
   const parsedId = parseInt(id);
 
   if (isNaN(parsedId)) {
