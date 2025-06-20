@@ -1,8 +1,19 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 
 export default function AddEmployeePage() {
+  const router = useRouter();
+
+  // 🔒 Check admin auth
+  useEffect(() => {
+    const admin = localStorage.getItem('admin');
+    if (!admin) {
+      router.push('/admin/login');
+    }
+  }, []);
+
   const [form, setForm] = useState({
     name: '',
     email: '',
@@ -38,7 +49,22 @@ export default function AddEmployeePage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
+    <div className="min-h-screen flex flex-col items-center justify-center bg-gray-100 px-4 py-8">
+      {/* 🔓 Logout Header */}
+      <div className="w-full max-w-md flex justify-between items-center mb-6">
+        <h1 className="text-xl font-semibold">Admin Panel</h1>
+        <button
+          onClick={() => {
+            localStorage.removeItem('admin');
+            router.push('/admin/login');
+          }}
+          className="text-red-600 text-sm hover:underline"
+        >
+          Logout
+        </button>
+      </div>
+
+      {/* 👤 Add Employee Form */}
       <form
         onSubmit={handleSubmit}
         className="bg-white shadow-lg rounded p-6 w-full max-w-md space-y-4"
