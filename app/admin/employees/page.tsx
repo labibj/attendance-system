@@ -2,7 +2,10 @@
 
 'use client';
 
+import React from 'react';
 import { useEffect, useState } from 'react';
+import AdminHeader from "@/app/components/AdminHeader";
+import AdminSidebar from "@/app/components/AdminSidebar";
 
 interface Employee {
   id: number;
@@ -45,41 +48,49 @@ export default function EmployeeList() {
   };
 
   return (
-    <div className="p-6 max-w-4xl mx-auto">
-      <h1 className="text-2xl font-bold mb-6 text-gray-800">Employee List</h1>
+    <div className="flex min-h-screen bg-gray-100">
+      {/* Sidebar */}
+      <AdminSidebar />
+      {/* Main Content */}
+      <div className="flex-1 p-6 ml-64">
+        {/* Header */}
+        <AdminHeader />
+      
+        <h2 className="text-2xl font-bold mb-6 text-gray-800">Employee List</h2>
 
-      {employees.length === 0 ? (
-        <p className="text-gray-600">No employees found.</p>
-      ) : (
-        <div className="overflow-x-auto bg-white shadow rounded-lg">
-          <table className="min-w-full divide-y divide-gray-200">
-            <thead className="bg-gray-100">
-              <tr>
-                <th className="px-6 py-3 text-left text-sm font-semibold text-gray-700">Name</th>
-                <th className="px-6 py-3 text-left text-sm font-semibold text-gray-700">Email</th>
-                <th className="px-6 py-3 text-right text-sm font-semibold text-gray-700">Actions</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-gray-200">
-              {employees.map((emp) => (
-                <tr key={emp.id}>
-                  <td className="px-6 py-4 text-sm text-gray-800">{emp.name}</td>
-                  <td className="px-6 py-4 text-sm text-gray-800">{emp.email}</td>
-                  <td className="px-6 py-4 text-sm text-right">
-                    <button
-                      onClick={() => deleteEmployee(emp.id)}
-                      className="text-red-600 hover:text-red-800 font-medium disabled:opacity-50"
-                      disabled={deletingId === emp.id}
-                    >
-                      {deletingId === emp.id ? 'Deleting...' : 'Delete'}
-                    </button>
-                  </td>
+        {employees.length === 0 ? (
+          <p className="text-gray-600">No employees found.</p>
+        ) : (
+          <div className="overflow-x-auto bg-white shadow rounded-lg">
+            <table className="min-w-full divide-y divide-gray-200">
+              <thead className="bg-gray-800">
+                <tr>
+                  <th className="px-6 py-3 text-left text-sm font-semibold text-white">Name</th>
+                  <th className="px-6 py-3 text-left text-sm font-semibold text-white">Email</th>
+                  <th className="px-6 py-3 text-right text-sm font-semibold text-white">Actions</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      )}
+              </thead>
+              <tbody className="divide-y divide-gray-200">
+                {employees.map((emp) => (
+                  <tr key={emp.id}>
+                    <td className="px-6 py-4 text-sm text-gray-800">{emp.name}</td>
+                    <td className="px-6 py-4 text-sm text-gray-800">{emp.email}</td>
+                    <td className="px-6 py-4 text-sm text-right">
+                      <button
+                        onClick={() => deleteEmployee(emp.id)}
+                        className="text-red-600 hover:text-red-800 font-medium disabled:opacity-50"
+                        disabled={deletingId === emp.id}
+                      >
+                        {deletingId === emp.id ? 'Deleting...' : 'Delete'}
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
+      </div>
     </div>
   );
 }

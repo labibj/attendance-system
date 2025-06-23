@@ -23,7 +23,7 @@ export default function AdminHeader() {
             <h1 className="text-2xl font-bold  text-gray-800">ADMIN DASHBOARD</h1>
             <button
             onClick={handleLogout}
-            className="flex items-center gap-2 bg-[#edf5f4] hover:bg-[#36a5dd] text-[#121e44] hover:text-white transition-all rounded-full border border-[#121e44] px-5 py-2 text-base "
+            className="flex items-center gap-2 bg-[#edf5f4] hover:bg-[#36a5dd] text-[#121e44] hover:text-white transition-all rounded border border-[#121e44] px-5 py-2 text-base cursor-pointer"
             >
                 <FontAwesomeIcon icon={faRightFromBracket} />
                 Logout
