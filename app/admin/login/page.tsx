@@ -31,7 +31,7 @@ export default function AdminLogin() {
 
     if (res.ok) {
       localStorage.setItem('admin', JSON.stringify(data));
-      router.push('/admin/logs'); // ✅ Redirect here
+      router.push('/admin/dashboard'); // ✅ Redirect here
     } else {
       setError(data.message || 'Login failed');
     }
