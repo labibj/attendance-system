@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUserPlus, faUsers, faRightFromBracket, faListAlt } from '@fortawesome/free-solid-svg-icons';
+import Image from 'next/image';
 
 export default function AdminDashboard() {
   return (
@@ -32,6 +33,15 @@ export default function AdminDashboard() {
           </h3>
           </Link>
         </div>
+      </div>
+      <div className="">
+        <Image
+          src="/admin-banner-new-3.jpg" // Place your image in /public folder
+          alt="Admin Dashboard Banner"
+          width={600}
+          height={200}
+          className="rounded-lg shadow-md h-auto w-full mt-5"
+        />
       </div>
     </section>
   );

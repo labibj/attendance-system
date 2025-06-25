@@ -1,6 +1,9 @@
 'use client';
 
+import React from 'react';
 import { useState, useEffect } from 'react';
+import AdminHeader from "@/app/components/AdminHeader";
+import AdminSidebar from "@/app/components/AdminSidebar";
 import { useRouter } from 'next/navigation';
 
 export default function AddEmployeePage() {
@@ -49,68 +52,65 @@ export default function AddEmployeePage() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-gray-100 px-4 py-8">
-      {/* 🔓 Logout Header */}
-      <div className="w-full max-w-md flex justify-between items-center mb-6">
-        <h1 className="text-xl font-semibold">Admin Panel</h1>
-        <button
-          onClick={() => {
-            localStorage.removeItem('admin');
-            router.push('/admin/login');
-          }}
-          className="text-red-600 text-sm hover:underline"
-        >
-          Logout
-        </button>
+    <div className="flex min-h-screen bg-gray-100">
+      {/* Sidebar */}
+        <AdminSidebar />
+        {/* Main Content */}
+        <div className="flex-1 p-6 ml-64">
+          {/* Header */}
+          <AdminHeader />
+
+          <div className=''></div>
+        
+          <h2 className="text-2xl font-bold mb-6 text-gray-800">Add New Employee</h2>
+
+          {/* 👤 Add Employee Form */}
+          <form
+            onSubmit={handleSubmit}
+            className="bg-white shadow-lg rounded p-6 w-full max-w-md space-y-4"
+          >
+
+            <input
+              type="text"
+              name="name"
+              placeholder="Full Name"
+              required
+              value={form.name}
+              onChange={handleChange}
+              className="w-full border p-2 rounded"
+            />
+
+            <input
+              type="email"
+              name="email"
+              placeholder="Email"
+              required
+              value={form.email}
+              onChange={handleChange}
+              className="w-full border p-2 rounded"
+            />
+
+            <input
+              type="password"
+              name="password"
+              placeholder="Password"
+              required
+              value={form.password}
+              onChange={handleChange}
+              className="w-full border p-2 rounded"
+            />
+
+            <button
+              type="submit"
+              className="w-full cursor-pointer bg-green-600 text-white py-2 rounded hover:bg-green-700"
+              disabled={loading}
+            >
+              {loading ? 'Adding...' : 'Add Employee'}
+            </button>
+
+            {message && <p className="text-sm mt-2">{message}</p>}
+          </form>
       </div>
-
-      {/* 👤 Add Employee Form */}
-      <form
-        onSubmit={handleSubmit}
-        className="bg-white shadow-lg rounded p-6 w-full max-w-md space-y-4"
-      >
-        <h2 className="text-2xl font-bold">Add New Employee</h2>
-
-        <input
-          type="text"
-          name="name"
-          placeholder="Full Name"
-          required
-          value={form.name}
-          onChange={handleChange}
-          className="w-full border p-2 rounded"
-        />
-
-        <input
-          type="email"
-          name="email"
-          placeholder="Email"
-          required
-          value={form.email}
-          onChange={handleChange}
-          className="w-full border p-2 rounded"
-        />
-
-        <input
-          type="password"
-          name="password"
-          placeholder="Password"
-          required
-          value={form.password}
-          onChange={handleChange}
-          className="w-full border p-2 rounded"
-        />
-
-        <button
-          type="submit"
-          className="w-full bg-green-600 text-white py-2 rounded hover:bg-green-700"
-          disabled={loading}
-        >
-          {loading ? 'Adding...' : 'Add Employee'}
-        </button>
-
-        {message && <p className="text-sm mt-2">{message}</p>}
-      </form>
     </div>
   );
 }
