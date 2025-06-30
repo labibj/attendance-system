@@ -9,12 +9,8 @@ export async function GET(
 
   try {
     const logs = await prisma.log.findMany({
-      where: {
-        employeeId: id,
-      },
-      orderBy: {
-        createdAt: 'desc',
-      },
+      where: { employeeId: id },
+      orderBy: { createdAt: 'desc' },
     });
 
     return NextResponse.json(logs);
