@@ -1,21 +1,26 @@
-// app/api/employee-logs/[id]/route.ts
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
+import type { NextRequest } from 'next/server';
 
-export async function GET(_: Request, { params }: { params: { id: string } }) {
+export async function GET(
+  req: NextRequest,
+  context: { params: { id: string } }
+) {
+  const { id } = context.params;
+
   try {
     const logs = await prisma.log.findMany({
       where: {
-        employeeId: parseInt(params.id),
+        employeeId: parseInt(id),
       },
       orderBy: {
-        createdAt: 'desc', // ✅ Must be a valid field in your schema
+        createdAt: 'desc',
       },
     });
 
-    return NextResponse.json(logs); // ✅ returns an array
+    return NextResponse.json(logs);
   } catch (error) {
     console.error('Error fetching logs:', error);
-    return NextResponse.json([], { status: 500 }); // Return an empty array on error
+    return NextResponse.json([], { status: 500 });
   }
 }
