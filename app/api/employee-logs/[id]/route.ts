@@ -1,17 +1,17 @@
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
-import type { NextRequest } from 'next/server';
 
+// ✅ Context typing goes here directly
 export async function GET(
   req: NextRequest,
-  context: { params: { id: string } }
+  { params }: { params: { id: string } }
 ) {
-  const { id } = context.params;
+  const id = parseInt(params.id);
 
   try {
     const logs = await prisma.log.findMany({
       where: {
-        employeeId: parseInt(id),
+        employeeId: id,
       },
       orderBy: {
         createdAt: 'desc',
@@ -21,6 +21,6 @@ export async function GET(
     return NextResponse.json(logs);
   } catch (error) {
     console.error('Error fetching logs:', error);
-    return NextResponse.json([], { status: 500 });
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }
