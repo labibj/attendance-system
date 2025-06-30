@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 
-// ✅ Context typing goes here directly
 export async function GET(
   req: NextRequest,
   { params }: { params: { id: string } }
