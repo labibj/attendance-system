@@ -4,6 +4,8 @@ import Link from 'next/link';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUserPlus, faUsers, faRightFromBracket, faListAlt } from '@fortawesome/free-solid-svg-icons';
 import Image from 'next/image';
+import AdminHeader from "@/app/components/AdminHeader";
+import AdminSidebar from "@/app/components/AdminSidebar";
 
 export default function AdminDashboard() {
   return (
