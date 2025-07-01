@@ -61,7 +61,7 @@ export default function EmployeeLogsPage() {
       <div className="flex-1 p-6 ml-64">
         <AdminHeader />
         <h2 className="text-xl font-bold mb-4">
-          Break Logs {employee?.name ? `for ${employee.name}` : ''}
+          Break Logs for <span className='text-[#36a5dd]'>{employee?.name ? `${employee.name}` : ''}</span>
         </h2>
 
         {logs.length === 0 ? (
