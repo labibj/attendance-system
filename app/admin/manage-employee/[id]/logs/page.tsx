@@ -72,12 +72,48 @@ export default function EmployeeLogsPage() {
 
   const employeeName = employee?.name || 'Unknown Employee';
 
+  function downloadCSV(data: Log[], employeeName: string) {
+    const headers = ['ID', 'Type', 'Timestamp'];
+    const rows = data.map((log) => [
+      log.id,
+      log.type,
+      new Date(log.createdAt).toLocaleString(),
+    ]);
+
+    const csvContent =
+      [headers, ...rows].map((e) => e.join(',')).join('\n');
+
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+
+    const link = document.createElement('a');
+    link.href = url;
+    link.setAttribute(
+      'download',
+      `${employeeName.replace(/\s+/g, '_')}_break_logs.csv`
+    );
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  }
+
   return (
     <div className="flex min-h-screen bg-gray-100">
       <AdminSidebar />
       <div className="flex-1 p-6 ml-64">
         <AdminHeader />
-        <h2 className="text-xl font-bold mb-4">Break Logs for {employeeName}</h2>
+        <div className='flex justify-between items-center mb-4'>
+          <h2 className="text-xl font-bold">Break Logs for {employeeName}</h2>
+          {/* Download CSV Button */}
+          {logs.length > 0 && (
+            <button
+              onClick={() => downloadCSV(logs, employee?.name || 'employee')}
+              className="transition-all bg-blue-600 text-white py-2 rounded hover:bg-blue-700 cursor-pointer px-3"
+            >
+              Download CSV
+            </button>
+          )}
+        </div>
 
         {logs.length === 0 ? (
           <p>No logs found for {employeeName}.</p>
