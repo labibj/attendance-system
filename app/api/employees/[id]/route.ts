@@ -24,7 +24,7 @@ export async function GET(
         id: true,
         name: true,
         email: true,
-        department: true, // Include department if you plan to edit it
+        // department: true, // Include department if you plan to edit it
         createdAt: true,
       },
     });
@@ -54,7 +54,7 @@ export async function PATCH(
 
   try {
     const body = await req.json(); // Get the updated data from the request body
-    const { name, email, department } = body; // Destructure fields you expect to update
+    const { name, email } = body; // Destructure fields you expect to update
 
     // Basic validation (add more as needed)
     if (!name || !email) {
@@ -66,14 +66,14 @@ export async function PATCH(
       data: {
         name: name,
         email: email,
-        department: department, // Update department if provided
+        // department: department, // Update department if provided
         // Add other fields you want to allow updating
       },
       select: { // Select fields to return in the response
         id: true,
         name: true,
         email: true,
-        department: true,
+        //department: true,
         createdAt: true,
       },
     });
