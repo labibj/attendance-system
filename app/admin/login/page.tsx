@@ -67,7 +67,7 @@ export default function AdminLogin() {
           onChange={(e) => setPassword(e.target.value)}
           required
         />
-        <button type="submit" className="w-full bg-blue-600 text-white py-2 rounded cursor-pointer">
+        <button type="submit" className="w-full transition-all bg-blue-600 text-white py-2 rounded hover:bg-blue-700 cursor-pointer">
           Login
         </button>
       </form>
