@@ -1,3 +1,4 @@
+// app/admin/manage-employee/[id]/logs/page.tsx
 'use client';
 
 import { useEffect, useState } from 'react';
@@ -11,10 +12,11 @@ interface Log {
   createdAt: string;
 }
 
+// Employee interface - Department field removed
 interface Employee {
   id: number;
   name: string;
-  email: string;
+  email: string; // Keep email if you fetch it, even if not displayed
 }
 
 export default function EmployeeLogsPage() {
@@ -24,86 +26,61 @@ export default function EmployeeLogsPage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetchLogsAndEmployee = async () => {
+    const fetchEmployeeData = async () => {
+      if (typeof id !== 'string') { // Ensure id is available and is a string
+        setLoading(false);
+        console.error('Employee ID is not a string or is missing.');
+        return;
+      }
+
+      setLoading(true);
       try {
-        // Fetch logs
-        const logRes = await fetch(`/api/employee-logs/${id}`);
-        const logData = await logRes.json();
-        if (Array.isArray(logData)) {
-          setLogs(logData);
+        // Fetch employee logs
+        const logsRes = await fetch(`/api/employee-logs/${id}`);
+        const logsData = await logsRes.json();
+        if (Array.isArray(logsData)) {
+          setLogs(logsData);
         } else {
-          console.error('Logs response is not an array:', logData);
+          console.error('API response for logs is not an array:', logsData);
+          setLogs([]);
         }
 
-        // Fetch employee info
-        const empRes = await fetch(`/api/employees/${id}`);
-        const empData = await empRes.json();
-        if (empData?.name) {
-          setEmployee(empData);
+        // Fetch employee details
+        const employeeRes = await fetch(`/api/employees/${id}`);
+        const employeeData = await employeeRes.json();
+
+        if (employeeRes.ok) {
+          setEmployee(employeeData);
         } else {
-          console.error('Employee data not found:', empData);
+          console.error('Failed to fetch employee details:', employeeData);
+          setEmployee(null);
         }
+
       } catch (err) {
         console.error('Failed to fetch data:', err);
+        setLogs([]);
+        setEmployee(null);
       } finally {
         setLoading(false);
       }
     };
 
-    fetchLogsAndEmployee();
+    fetchEmployeeData();
   }, [id]);
 
-  if (loading) return <p>Loading logs...</p>;
+  if (loading) return <p>Loading employee data and logs...</p>;
 
-  function downloadCSV(data: Log[], employeeName: string) {
-    const headers = ['ID', 'Type', 'Timestamp'];
-    const rows = data.map((log) => [
-      log.id,
-      log.type,
-      new Date(log.createdAt).toLocaleString(),
-    ]);
-
-    const csvContent =
-      [headers, ...rows].map((e) => e.join(',')).join('\n');
-
-    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-    const url = URL.createObjectURL(blob);
-
-    const link = document.createElement('a');
-    link.href = url;
-    link.setAttribute(
-      'download',
-      `${employeeName.replace(/\s+/g, '_')}_break_logs.csv`
-    );
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-  }
-
+  const employeeName = employee?.name || 'Unknown Employee';
 
   return (
     <div className="flex min-h-screen bg-gray-100">
       <AdminSidebar />
       <div className="flex-1 p-6 ml-64">
         <AdminHeader />
-        <div className='flex justify-between items-center mb-4'>
-          <h2 className="text-xl font-bold">
-            Break Logs for <span className='text-[#36a5dd]'>{employee?.name ? `${employee.name}` : ''}</span>
-          </h2>
-          {/* Download CSV Button */}
-            {logs.length > 0 && (
-              <button
-                onClick={() => downloadCSV(logs, employee?.name || 'employee')}
-                className="px-5 transition-all bg-blue-600 text-white py-2 rounded hover:bg-blue-700 cursor-pointer"
-              >
-                Download CSV
-              </button>
-            )}
-        </div>
-
+        <h2 className="text-xl font-bold mb-4">Break Logs for {employeeName}</h2>
 
         {logs.length === 0 ? (
-          <p>No logs found for this employee.</p>
+          <p>No logs found for {employeeName}.</p>
         ) : (
           <div className="overflow-x-auto bg-white shadow rounded-lg">
             <table className="min-w-full divide-y divide-gray-200">
