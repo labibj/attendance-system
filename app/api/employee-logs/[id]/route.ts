@@ -6,11 +6,14 @@ import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
 
 // The correct way to access dynamic params in App Router:
+// In Next.js 15+, params is a Promise.
 export async function GET(
   req: Request,
-  context: { params: { id: string } }
+  context: { params: Promise<{ id: string }> } // Type params as a Promise
 ) {
-  const id = parseInt(context.params.id);
+  const { id: paramId } = await context.params; // Await params and rename for clarity if desired
+
+  const id = parseInt(paramId); // Parse the awaited string ID
 
   if (isNaN(id)) {
     return NextResponse.json({ message: 'Invalid ID' }, { status: 400 });
