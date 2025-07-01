@@ -25,7 +25,7 @@ export async function GET(
         name: true,
         email: true,
         // department: true, // Include department if you plan to edit it
-        createdAt: true,
+        // createdAt: true,
       },
     });
 
@@ -74,7 +74,7 @@ export async function PATCH(
         name: true,
         email: true,
         //department: true,
-        createdAt: true,
+        // createdAt: true,
       },
     });
 
